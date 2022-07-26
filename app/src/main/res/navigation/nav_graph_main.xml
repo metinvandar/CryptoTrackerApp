@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/nav_coin_list_fragment">
+
+    <fragment
+        android:id="@+id/nav_coin_list_fragment"
+        android:name="com.metinvandar.cryptotrackerapp.presentation.coin_list.CoinListFragment"
+        android:label="@string/coin_list_fragment_label"
+        tools:layout="@layout/fragment_coin_list">
+
+        <action
+            android:id="@+id/action_coinList_to_rate_alert"
+            app:destination="@id/nav_fragment_rate_alert" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_fragment_rate_alert"
+        android:name="com.metinvandar.cryptotrackerapp.presentation.rate_alert.RateAlertFragment"
+        android:label="@string/rate_alert_fragment_label"
+        tools:layout="@layout/fragment_rate_alert">
+
+    </fragment>
+</navigation>

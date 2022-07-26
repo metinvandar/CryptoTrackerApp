@@ -5,5 +5,6 @@ data class CoinDomainModel(
     val name: String,
     val symbol: String,
     val image: String,
-    val currentPrice: Double
+    val currentPrice: Double,
+    val priceChangePercentage: Double
 )

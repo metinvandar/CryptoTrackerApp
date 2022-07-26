@@ -10,7 +10,7 @@ interface CryptoApi {
     @GET("simple/price?vs_currency=usd")
     suspend fun simplePrice(@Query("ids") coinIds: String): List<CoinPricesResponse>
 
-    @GET("coins/markets?vs_currency=usd&ids=bitcoin%2Cethereum")
+    @GET("coins/markets?vs_currency=usd&ids=bitcoin%2Cethereum%2Cripple")
     suspend fun coins(): List<CoinResponse>
 
 }

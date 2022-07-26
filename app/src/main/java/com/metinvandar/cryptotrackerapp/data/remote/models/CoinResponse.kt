@@ -13,9 +13,11 @@ data class CoinResponse(
     @SerializedName("image")
     val image: String,
     @SerializedName("current_price")
-    val currentPrice: Double
+    val currentPrice: Double,
+    @SerializedName("price_change_percentage_24h")
+    val priceChangePercentage: Double
 )
 
 fun CoinResponse.toDomainModel(): CoinDomainModel {
-    return CoinDomainModel(id, name, symbol, image, currentPrice)
+    return CoinDomainModel(id, name, symbol, image, currentPrice, priceChangePercentage)
 }
