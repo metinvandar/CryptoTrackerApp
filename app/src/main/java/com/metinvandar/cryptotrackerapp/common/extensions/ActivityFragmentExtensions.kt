@@ -1,5 +1,9 @@
 package com.metinvandar.cryptotrackerapp.common.extensions
 
+import android.app.Activity
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.metinvandar.cryptotrackerapp.R
@@ -19,5 +23,13 @@ fun Fragment.handleError(
             getString(R.string.unknown_error_message)
         }
     }
-    requireView().snackBar(errorMessage, retry, errorViewDuration)
+    requireView().snackBar(message = errorMessage, action = retry, duration = errorViewDuration)
+}
+
+fun Activity.hideKeyboard() {
+    val view = currentFocus
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    if (view != null) {
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }

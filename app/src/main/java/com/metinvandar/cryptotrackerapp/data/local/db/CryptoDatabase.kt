@@ -3,9 +3,9 @@ package com.metinvandar.cryptotrackerapp.data.local.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.metinvandar.cryptotrackerapp.data.local.dao.CoinDao
-import com.metinvandar.cryptotrackerapp.data.local.entity.CoinEntity
+import com.metinvandar.cryptotrackerapp.data.local.entity.CoinRateEntity
 
-@Database(entities = [CoinEntity::class], version = 1, exportSchema = false)
+@Database(entities = [CoinRateEntity::class], version = 1, exportSchema = false)
 abstract class CryptoDatabase : RoomDatabase() {
 
     abstract fun coinDao(): CoinDao

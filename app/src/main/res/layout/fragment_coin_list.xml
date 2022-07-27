@@ -4,18 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/blue_yonder"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/vc_back_arrow_white"
-        app:title="CryptoTracker"
-        app:titleTextColor="@color/white" />
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/toolbar_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/coinList"
@@ -26,7 +17,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout" />
 
     <ProgressBar
         android:id="@+id/progressBar"

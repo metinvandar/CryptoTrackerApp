@@ -1,10 +1,8 @@
 package com.metinvandar.cryptotrackerapp.di
 
+import com.metinvandar.cryptotrackerapp.data.local.dao.CoinDao
 import com.metinvandar.cryptotrackerapp.domain.repository.CryptoRepository
-import com.metinvandar.cryptotrackerapp.domain.usecase.GetSimplePriceUseCase
-import com.metinvandar.cryptotrackerapp.domain.usecase.GetSimplePriceUseCaseImpl
-import com.metinvandar.cryptotrackerapp.domain.usecase.GetCoinsUseCase
-import com.metinvandar.cryptotrackerapp.domain.usecase.GetCoinsUseCaseImpl
+import com.metinvandar.cryptotrackerapp.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +23,11 @@ object UseCaseModule {
     @ViewModelScoped
     fun provideGetPricesUseCase(cryptoRepository: CryptoRepository): GetSimplePriceUseCase {
         return GetSimplePriceUseCaseImpl(cryptoRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSaveCoinRateUseCase(coinDao: CoinDao): SaveCoinRateUseCase {
+        return SaveCoinRateUseCaseImpl(coinDao)
     }
 }

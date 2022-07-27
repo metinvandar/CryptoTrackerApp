@@ -13,7 +13,17 @@
 
         <action
             android:id="@+id/action_coinList_to_rate_alert"
-            app:destination="@id/nav_fragment_rate_alert" />
+            app:destination="@id/nav_fragment_rate_alert"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_from_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_from_right">
+
+            <argument
+                android:name="coin"
+                app:argType="com.metinvandar.cryptotrackerapp.domain.model.CoinDomainModel" />
+
+        </action>
     </fragment>
     <fragment
         android:id="@+id/nav_fragment_rate_alert"

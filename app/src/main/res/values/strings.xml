@@ -1,10 +1,20 @@
 <resources>
     <string name="app_name">CryptoTrackerApp</string>
     <string name="action_settings">Settings</string>
-    <string name="coin_list_fragment_label">Coin List</string>
+    <string name="coin_list_fragment_label">Coins</string>
     <string name="rate_alert_fragment_label">Set Rate Alert</string>
     <string name="value_with_currency">%1$s$</string>
     <string name="value_with_percentage">%1$s%%</string>
     <string name="connection_error_message">Something is temporarily wrong with your connection. Please make sure you are connected to the internet.</string>
     <string name="unknown_error_message">Something went wrong :(</string>
+    <string name="min_rate_edit_text_hint">Min rate</string>
+    <string name="max_rate_edit_text_hint">Max rate</string>
+    <string name="set_rate_button_text">SET RATE</string>
+    <string name="show_history_button">Show History</string>
+    <string name="coin_rate_value_successfully_saved">Your min and max values are set for %1$s.</string>
+    <string name="go_back">Go Back</string>
+    <string name="min_rate_input_empty_error">Min rate cannot be empty!</string>
+    <string name="max_rate_input_empty_error">Max rate cannot be empty!</string>
+    <string name="max_rate_must_be_greater">Max rate must be greater than min rate!</string>
+    <string name="ok">OK</string>
 </resources>

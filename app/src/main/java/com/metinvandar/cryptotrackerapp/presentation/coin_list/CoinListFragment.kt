@@ -8,13 +8,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.metinvandar.cryptotrackerapp.R
 import com.metinvandar.cryptotrackerapp.common.extensions.handleError
 import com.metinvandar.cryptotrackerapp.common.extensions.visible
 import com.metinvandar.cryptotrackerapp.databinding.FragmentCoinListBinding
 import com.metinvandar.cryptotrackerapp.presentation.adapter.CoinListAdapter
 import com.metinvandar.cryptotrackerapp.presentation.state.CoinListUIState
-import com.metinvandar.cryptotrackerapp.presentation.viewmodel.CoinListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,6 +30,7 @@ class CoinListFragment : Fragment(R.layout.fragment_coin_list) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCoinListBinding.bind(view)
         setToolbar()
+        getCoins()
         initCoinList()
         collectUIState()
     }
@@ -37,41 +38,46 @@ class CoinListFragment : Fragment(R.layout.fragment_coin_list) {
     private fun initCoinList() {
         coinListAdapter = CoinListAdapter().apply {
             onItemClick = {
-
+                val direction = CoinListFragmentDirections.actionCoinListToRateAlert(it)
+                findNavController().navigate(direction)
             }
         }
         binding.coinList.adapter = coinListAdapter
     }
 
+    private fun getCoins() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.getInitialCoins()
+            }
+        }
+    }
+
     private fun collectUIState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.coinListState.collect { state ->
-                    when (state) {
-                        is CoinListUIState.Loading -> {
-                            binding.progressBar.visible = state.isLoading
-                        }
-                        is CoinListUIState.Result -> {
-                            coinListAdapter.submitList(state.coins)
-                        }
-                        is CoinListUIState.Error -> handleError(
-                            errorState = state,
-                            retry = {
-                                viewModel.getInitialCoins()
-                            }
-                        )
+            viewModel.coinListState.collect { state ->
+                when (state) {
+                    is CoinListUIState.Loading -> {
+                        binding.progressBar.visible = state.isLoading
                     }
+                    is CoinListUIState.Result -> {
+                        coinListAdapter.submitList(state.coins)
+                    }
+                    is CoinListUIState.Error -> handleError(
+                        errorState = state,
+                        retry = {
+                            viewModel.getInitialCoins()
+                        }
+                    )
                 }
             }
         }
     }
 
     private fun setToolbar() {
-        binding.toolbar.run {
+        binding.toolbarLayout.materialToolbar.run {
             title = getString(R.string.coin_list_fragment_label)
-            isTitleCentered = true
             navigationIcon = null
-            setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         }
     }
 }

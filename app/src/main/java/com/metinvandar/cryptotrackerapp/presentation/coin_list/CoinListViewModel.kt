@@ -1,4 +1,4 @@
-package com.metinvandar.cryptotrackerapp.presentation.viewmodel
+package com.metinvandar.cryptotrackerapp.presentation.coin_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
