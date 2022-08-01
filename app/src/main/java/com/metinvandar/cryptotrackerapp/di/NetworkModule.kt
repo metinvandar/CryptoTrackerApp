@@ -1,11 +1,11 @@
 package com.metinvandar.cryptotrackerapp.di
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.metinvandar.cryptotrackerapp.BuildConfig
 import com.metinvandar.cryptotrackerapp.common.Constants.BASE_URL
 import com.metinvandar.cryptotrackerapp.common.Constants.RETROFIT_TIMEOUT
+import com.metinvandar.cryptotrackerapp.data.remote.adapter.CoinPriceAdapter
 import com.metinvandar.cryptotrackerapp.data.remote.api.CryptoApi
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,34 +13,38 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object NetworkModule {
     @Provides
     @Singleton
-    fun provideRetrofitBuilder(gson: Gson): Retrofit.Builder = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create(gson))
+    fun provideMoshi(): Moshi {
+        return  Moshi.Builder()
+            .add(CoinPriceAdapter())
+            .build()
+
+    }
 
     @Provides
-    internal fun provideRetrofit(
-        httpBuilder: OkHttpClient.Builder,
-        retrofitBuilder: Retrofit.Builder
-    ): Retrofit = retrofitBuilder
-        .client(httpBuilder.build())
-        .build()
+    fun provideRetrofit(
+        moshi: Moshi,
+        httpBuilder: OkHttpClient.Builder
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(httpBuilder.build())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+
+    }
 
     @Provides
     @Singleton
-    fun provideGson(): Gson = GsonBuilder().create()
-
-    @Provides
-    @Singleton
-    fun provideGithubApi(retrofit: Retrofit): CryptoApi = retrofit.create(CryptoApi::class.java)
+    fun provideCryptoApi(retrofit: Retrofit): CryptoApi = retrofit.create(CryptoApi::class.java)
 
     @Provides
     @Singleton

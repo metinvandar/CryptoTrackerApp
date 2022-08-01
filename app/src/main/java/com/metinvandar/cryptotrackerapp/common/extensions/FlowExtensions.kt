@@ -1,6 +1,6 @@
 package com.metinvandar.cryptotrackerapp.common.extensions
 
-import com.metinvandar.cryptotrackerapp.common.Resource
+import com.metinvandar.cryptotrackerapp.domain.Resource
 import com.metinvandar.cryptotrackerapp.domain.model.ErrorType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

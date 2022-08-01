@@ -1,28 +1,30 @@
-package com.metinvandar.cryptotrackerapp.presentation.rate_alert
+package com.metinvandar.cryptotrackerapp.presentation.set_alert
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.metinvandar.cryptotrackerapp.R
 import com.metinvandar.cryptotrackerapp.common.extensions.snackBar
 import com.metinvandar.cryptotrackerapp.common.extensions.visible
 import com.metinvandar.cryptotrackerapp.databinding.FragmentRateAlertBinding
 import com.metinvandar.cryptotrackerapp.domain.model.CoinDomainModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @AndroidEntryPoint
-class RateAlertFragment : Fragment(R.layout.fragment_rate_alert) {
+class SetAlertFragment : Fragment(R.layout.fragment_rate_alert) {
 
     private var _binding: FragmentRateAlertBinding? = null
     private val binding get() = _binding!!
     private lateinit var coin: CoinDomainModel
 
-    private val viewModel: RateAlertViewModel by viewModels()
+    private val viewModel: SetAlertViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,45 +35,55 @@ class RateAlertFragment : Fragment(R.layout.fragment_rate_alert) {
             findNavController().navigateUp()
         }
         setCoinInfo(coin)
+        collectInputState()
 
         binding.setRateButton.setOnClickListener {
-            if (binding.minRateEditText.text.isNullOrBlank()) {
-                binding.run {
-                    minRateTextInputLayout.error = getString(R.string.min_rate_input_empty_error)
-                    maxRateTextInputLayout.error = null
-                }
-                return@setOnClickListener
-            } else if (binding.maxRateEditText.text.isNullOrBlank()) {
-                binding.run {
-                    maxRateTextInputLayout.error = getString(R.string.max_rate_input_empty_error)
-                    minRateTextInputLayout.error = null
-                }
-                return@setOnClickListener
-            } else if (binding.maxRateEditText.text.toString()
-                    .toDouble() <= binding.minRateEditText.text.toString().toDouble()
-            ) {
-                requireView().snackBar(
-                    message = getString(R.string.max_rate_must_be_greater),
-                    actionButtonText = getString(R.string.ok),
-                    duration = Snackbar.LENGTH_SHORT,
-                )
-                return@setOnClickListener
-            } else {
-                binding.run {
-                    minRateTextInputLayout.error = null
-                    maxRateTextInputLayout.error = null
-                }
+            viewModel.validateInputs(
+                minRate = binding.minRateEditText.text.toString(),
+                maxRate = binding.maxRateEditText.text.toString()
+            )
+        }
+    }
 
+    private fun collectInputState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.inputState.collectLatest { state ->
+                when (state) {
+                    is InputState.MinRateError -> {
+                        binding.run {
+                            minRateTextInputLayout.error = state.errorMessage
+                            maxRateTextInputLayout.error = null
+                        }
+                    }
+                    is InputState.MaxRateError -> {
+                        binding.run {
+                            maxRateTextInputLayout.error = state.errorMessage
+                            minRateTextInputLayout.error = null
+                        }
+                    }
+                    is InputState.AllInputsError -> {
+                        binding.run {
+                            maxRateTextInputLayout.error = state.errorMessage
+                            minRateTextInputLayout.error = state.errorMessage
+                        }
+                    }
+
+                    is InputState.Valid -> {
+                        binding.run {
+                            minRateTextInputLayout.error = null
+                            maxRateTextInputLayout.error = null
+                        }
+                        saveMainAndMaxRate()
+                    } else -> {}
+                }
             }
-
-            saveMainAndMaxRate()
         }
     }
 
     private fun saveMainAndMaxRate() {
         val minRate = binding.minRateEditText.text.toString().toDouble()
         val maxRate = binding.maxRateEditText.text.toString().toDouble()
-        viewModel.saveCoinRate(coin, minRate, maxRate)
+        viewModel.saveCoinAlert(coin, minRate, maxRate)
         requireView().snackBar(
             message = getString(R.string.coin_rate_value_successfully_saved, coin.name),
             actionButtonText = getString(R.string.go_back),

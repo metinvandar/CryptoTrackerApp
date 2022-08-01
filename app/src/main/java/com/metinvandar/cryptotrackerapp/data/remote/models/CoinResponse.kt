@@ -1,20 +1,22 @@
 package com.metinvandar.cryptotrackerapp.data.remote.models
 
-import com.google.gson.annotations.SerializedName
 import com.metinvandar.cryptotrackerapp.domain.model.CoinDomainModel
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class CoinResponse(
-    @SerializedName("id")
+    @field:Json(name = "id")
     val id: String,
-    @SerializedName("name")
+    @field:Json(name = "name")
     val name: String,
-    @SerializedName("symbol")
+    @field:Json(name = "symbol")
     val symbol: String,
-    @SerializedName("image")
+    @field:Json(name = "image")
     val image: String,
-    @SerializedName("current_price")
+    @field:Json(name = "current_price")
     val currentPrice: Double,
-    @SerializedName("price_change_percentage_24h")
+    @field:Json(name = "price_change_percentage_24h")
     val priceChangePercentage: Double
 )
 

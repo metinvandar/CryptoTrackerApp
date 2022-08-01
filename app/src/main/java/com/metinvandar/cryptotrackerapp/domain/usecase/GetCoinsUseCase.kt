@@ -1,6 +1,6 @@
 package com.metinvandar.cryptotrackerapp.domain.usecase
 
-import com.metinvandar.cryptotrackerapp.common.Resource
+import com.metinvandar.cryptotrackerapp.domain.Resource
 import com.metinvandar.cryptotrackerapp.domain.model.CoinDomainModel
 import kotlinx.coroutines.flow.Flow
 

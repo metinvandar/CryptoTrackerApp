@@ -3,7 +3,8 @@ package com.metinvandar.cryptotrackerapp.di
 import android.content.Context
 import androidx.room.Room
 import com.metinvandar.cryptotrackerapp.common.Constants.DATABASE_NAME
-import com.metinvandar.cryptotrackerapp.data.local.dao.CoinDao
+import com.metinvandar.cryptotrackerapp.data.local.dao.CoinAlertDao
+import com.metinvandar.cryptotrackerapp.data.local.dao.CoinHistoryDao
 import com.metinvandar.cryptotrackerapp.data.local.db.CryptoDatabase
 import dagger.Module
 import dagger.Provides
@@ -24,5 +25,9 @@ object CacheModule {
 
     @Singleton
     @Provides
-    fun provideNoteDao(db: CryptoDatabase): CoinDao = db.coinDao()
+    fun provideCoinAlertDao(db: CryptoDatabase): CoinAlertDao = db.coinDao()
+
+    @Singleton
+    @Provides
+    fun provideCoinHistoryDao(db: CryptoDatabase): CoinHistoryDao = db.coinHistoryDao()
 }

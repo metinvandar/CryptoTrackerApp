@@ -1,4 +1,4 @@
-package com.metinvandar.cryptotrackerapp.common
+package com.metinvandar.cryptotrackerapp.domain
 
 import com.metinvandar.cryptotrackerapp.domain.model.ErrorType
 

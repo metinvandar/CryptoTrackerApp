@@ -2,7 +2,6 @@ package com.metinvandar.cryptotrackerapp.presentation.coin_list
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,8 +13,8 @@ import com.metinvandar.cryptotrackerapp.common.extensions.handleError
 import com.metinvandar.cryptotrackerapp.common.extensions.visible
 import com.metinvandar.cryptotrackerapp.databinding.FragmentCoinListBinding
 import com.metinvandar.cryptotrackerapp.presentation.adapter.CoinListAdapter
-import com.metinvandar.cryptotrackerapp.presentation.state.CoinListUIState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -55,7 +54,7 @@ class CoinListFragment : Fragment(R.layout.fragment_coin_list) {
 
     private fun collectUIState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.coinListState.collect { state ->
+            viewModel.coinListState.collectLatest { state ->
                 when (state) {
                     is CoinListUIState.Loading -> {
                         binding.progressBar.visible = state.isLoading

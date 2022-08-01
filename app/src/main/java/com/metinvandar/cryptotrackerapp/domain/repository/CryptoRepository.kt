@@ -1,14 +1,19 @@
 package com.metinvandar.cryptotrackerapp.domain.repository
 
-import com.metinvandar.cryptotrackerapp.common.Resource
-import com.metinvandar.cryptotrackerapp.data.remote.models.CoinPricesResponse
+import com.metinvandar.cryptotrackerapp.domain.Resource
+import com.metinvandar.cryptotrackerapp.data.local.entity.CoinAlertEntity
+import com.metinvandar.cryptotrackerapp.data.local.entity.CoinHistoryEntity
+import com.metinvandar.cryptotrackerapp.data.remote.models.PriceResponseWrapper
 import com.metinvandar.cryptotrackerapp.domain.model.CoinDomainModel
-import com.metinvandar.cryptotrackerapp.domain.model.CoinPriceDomainModel
 import kotlinx.coroutines.flow.Flow
 
 interface CryptoRepository {
 
     suspend fun getCoins(): Flow<Resource<List<CoinDomainModel>>>
 
-    suspend fun getPrices(coinIds: String): Flow<Resource<List<CoinPriceDomainModel>>>
+    suspend fun getAlertCoins(): List<CoinAlertEntity>
+
+    suspend fun getSimplePrice(coinIds: String): Flow<Resource<PriceResponseWrapper>>
+
+    suspend fun saveCoinHistory(coinHistoryEntity: CoinHistoryEntity)
 }

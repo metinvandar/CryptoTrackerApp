@@ -17,4 +17,10 @@
     <string name="max_rate_input_empty_error">Max rate cannot be empty!</string>
     <string name="max_rate_must_be_greater">Max rate must be greater than min rate!</string>
     <string name="ok">OK</string>
+    <string name="default_notification_channel_id">default</string>
+    <string name="default_notification_channel_name">Crypto Tracker App</string>
+    <string name="notification_title">Coin price has changed!</string>
+    <string name="notification_message">%1$s price is %2$s</string>
+    <string name="history">History</string>
+    <string name="coin_history_empty_message">No history found. Set alert for this coin in order to record history.</string>
 </resources>

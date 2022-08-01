@@ -10,7 +10,7 @@ class GetCoinHistoryUseCaseImpl @Inject constructor(private val coinHistoryDao: 
     override suspend fun invoke(coinId: String): Flow<List<CoinHistory>> {
         return flow {
             val coinHistory = coinHistoryDao.getCoinHistory(coinId).map {
-                CoinHistory(it.price, it.recordTime)
+                CoinHistory(it.coinId, it.price, it.recordTime)
             }
             emit(coinHistory)
         }
