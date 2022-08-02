@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.*
 import java.util.*
 import javax.inject.Inject
 
-class GetNotificationCoins @Inject constructor(private val cryptoRepository: CryptoRepository) :
+class GetNotificationCoinsUseCaseImpl @Inject constructor(private val cryptoRepository: CryptoRepository) :
     GetNotificationCoinsUseCase {
     override suspend fun invoke(): Flow<List<SimplePrice>> {
         val alertCoins = cryptoRepository.getAlertCoins()
@@ -29,12 +29,12 @@ class GetNotificationCoins @Inject constructor(private val cryptoRepository: Cry
                         }
                     }
                 }.map {
-                    val notificationCoins = mutableListOf<SimplePrice>()
                     return@map if (it is Resource.Success) {
+                        val notificationCoins = mutableListOf<SimplePrice>()
                         checkMinMaxValue(alertCoins, it.data, notificationCoins)
                         notificationCoins.toList()
                     } else {
-                        notificationCoins.toList()
+                        emptyList()
                     }
                 }.catch {
                     emit(emptyList())
@@ -42,7 +42,6 @@ class GetNotificationCoins @Inject constructor(private val cryptoRepository: Cry
         } else {
             flow {
                 emit(emptyList())
-
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.metinvandar.cryptotrackerapp.data.remote.repository
 
-import com.metinvandar.cryptotrackerapp.common.extensions.handleErrors
+import com.metinvandar.cryptotrackerapp.domain.Resource
+import com.metinvandar.cryptotrackerapp.common.util.handleErrors
 import com.metinvandar.cryptotrackerapp.data.local.dao.CoinAlertDao
 import com.metinvandar.cryptotrackerapp.data.local.dao.CoinHistoryDao
 import com.metinvandar.cryptotrackerapp.data.local.entity.CoinAlertEntity
@@ -8,8 +9,8 @@ import com.metinvandar.cryptotrackerapp.data.local.entity.CoinHistoryEntity
 import com.metinvandar.cryptotrackerapp.data.remote.api.CryptoApi
 import com.metinvandar.cryptotrackerapp.data.remote.models.PriceResponseWrapper
 import com.metinvandar.cryptotrackerapp.data.remote.models.toDomainModel
-import com.metinvandar.cryptotrackerapp.domain.Resource
 import com.metinvandar.cryptotrackerapp.domain.model.CoinDomainModel
+import com.metinvandar.cryptotrackerapp.domain.model.CoinHistory
 import com.metinvandar.cryptotrackerapp.domain.repository.CryptoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -48,5 +49,14 @@ class CryptoRepositoryImpl @Inject constructor(
 
     override suspend fun saveCoinHistory(coinHistoryEntity: CoinHistoryEntity) {
         coinHistoryDao.insertHistory(coinHistoryEntity)
+    }
+
+    override suspend fun getCoinHistory(coinId: String): Flow<List<CoinHistory>> {
+        return flow {
+            val history = coinHistoryDao.getCoinHistory(coinId).map {
+                CoinHistory(it.coinId, it.price, it.recordTime)
+            }
+            emit(history.sortedByDescending { it.recordTime })
+        }
     }
 }

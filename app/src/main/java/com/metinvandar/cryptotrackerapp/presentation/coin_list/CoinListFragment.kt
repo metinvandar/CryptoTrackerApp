@@ -9,12 +9,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.metinvandar.cryptotrackerapp.R
-import com.metinvandar.cryptotrackerapp.common.extensions.handleError
-import com.metinvandar.cryptotrackerapp.common.extensions.visible
+import com.metinvandar.cryptotrackerapp.common.util.handleError
+import com.metinvandar.cryptotrackerapp.common.util.visible
 import com.metinvandar.cryptotrackerapp.databinding.FragmentCoinListBinding
 import com.metinvandar.cryptotrackerapp.presentation.adapter.CoinListAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -37,7 +36,7 @@ class CoinListFragment : Fragment(R.layout.fragment_coin_list) {
     private fun initCoinList() {
         coinListAdapter = CoinListAdapter().apply {
             onItemClick = {
-                val direction = CoinListFragmentDirections.actionCoinListToRateAlert(it)
+                val direction = CoinListFragmentDirections.navActionCoinListToSetAlert(it)
                 findNavController().navigate(direction)
             }
         }
@@ -54,7 +53,7 @@ class CoinListFragment : Fragment(R.layout.fragment_coin_list) {
 
     private fun collectUIState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.coinListState.collectLatest { state ->
+            viewModel.coinListState.collect { state ->
                 when (state) {
                     is CoinListUIState.Loading -> {
                         binding.progressBar.visible = state.isLoading

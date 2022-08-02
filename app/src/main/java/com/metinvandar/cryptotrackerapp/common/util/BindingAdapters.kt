@@ -1,4 +1,4 @@
-package com.metinvandar.cryptotrackerapp.common.extensions
+package com.metinvandar.cryptotrackerapp.common.util
 
 import android.widget.ImageView
 import androidx.core.net.toUri

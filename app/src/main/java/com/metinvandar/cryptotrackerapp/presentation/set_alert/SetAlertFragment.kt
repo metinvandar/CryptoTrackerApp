@@ -8,19 +8,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.metinvandar.cryptotrackerapp.R
-import com.metinvandar.cryptotrackerapp.common.extensions.snackBar
-import com.metinvandar.cryptotrackerapp.common.extensions.visible
-import com.metinvandar.cryptotrackerapp.databinding.FragmentRateAlertBinding
+import com.metinvandar.cryptotrackerapp.common.util.snackBar
+import com.metinvandar.cryptotrackerapp.common.util.visible
+import com.metinvandar.cryptotrackerapp.databinding.FragmentSetAlertBinding
 import com.metinvandar.cryptotrackerapp.domain.model.CoinDomainModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @AndroidEntryPoint
-class SetAlertFragment : Fragment(R.layout.fragment_rate_alert) {
+class SetAlertFragment : Fragment(R.layout.fragment_set_alert) {
 
-    private var _binding: FragmentRateAlertBinding? = null
+    private var _binding: FragmentSetAlertBinding? = null
     private val binding get() = _binding!!
     private lateinit var coin: CoinDomainModel
 
@@ -28,7 +27,7 @@ class SetAlertFragment : Fragment(R.layout.fragment_rate_alert) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentRateAlertBinding.bind(view)
+        _binding = FragmentSetAlertBinding.bind(view)
         coin = arguments?.getParcelable("coin")!!
         binding.toolbarLayout.materialToolbar.title = coin.name
         binding.toolbarLayout.materialToolbar.setNavigationOnClickListener {
@@ -43,11 +42,16 @@ class SetAlertFragment : Fragment(R.layout.fragment_rate_alert) {
                 maxRate = binding.maxRateEditText.text.toString()
             )
         }
+
+        binding.showHistoryButton.setOnClickListener {
+            val direction = SetAlertFragmentDirections.navActionSetAlertToHistory(coin.id)
+            findNavController().navigate(direction)
+        }
     }
 
     private fun collectInputState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.inputState.collectLatest { state ->
+            viewModel.inputState.collect { state ->
                 when (state) {
                     is InputState.MinRateError -> {
                         binding.run {
@@ -74,7 +78,8 @@ class SetAlertFragment : Fragment(R.layout.fragment_rate_alert) {
                             maxRateTextInputLayout.error = null
                         }
                         saveMainAndMaxRate()
-                    } else -> {}
+                    }
+                    else -> {}
                 }
             }
         }
@@ -83,7 +88,9 @@ class SetAlertFragment : Fragment(R.layout.fragment_rate_alert) {
     private fun saveMainAndMaxRate() {
         val minRate = binding.minRateEditText.text.toString().toDouble()
         val maxRate = binding.maxRateEditText.text.toString().toDouble()
-        viewModel.saveCoinAlert(coin, minRate, maxRate)
+        coin.minRate = minRate
+        coin.maxRate = maxRate
+        viewModel.saveCoinAlert(coin)
         requireView().snackBar(
             message = getString(R.string.coin_rate_value_successfully_saved, coin.name),
             actionButtonText = getString(R.string.go_back),
@@ -97,7 +104,7 @@ class SetAlertFragment : Fragment(R.layout.fragment_rate_alert) {
         binding.run {
             coinHeaderLayout.coinPrice.text =
                 getString(
-                    R.string.value_with_currency,
+                    R.string.price_with_currency,
                     coin.currentPrice.toString()
                 )
             if (coin.priceChangePercentage > 0) {

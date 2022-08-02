@@ -10,7 +10,7 @@ import com.metinvandar.cryptotrackerapp.data.remote.api.CryptoApi
 import com.metinvandar.cryptotrackerapp.data.remote.repository.CryptoRepositoryImpl
 import com.metinvandar.cryptotrackerapp.domain.repository.CryptoRepository
 import com.metinvandar.cryptotrackerapp.domain.usecase.GetNotificationCoinsUseCase
-import com.metinvandar.cryptotrackerapp.domain.usecase.GetNotificationCoins
+import com.metinvandar.cryptotrackerapp.domain.usecase.GetNotificationCoinsUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,7 +36,7 @@ object SingletonModule {
     @Provides
     @Singleton
     fun provideSimplePriceUseCase(repository: CryptoRepository): GetNotificationCoinsUseCase {
-        return GetNotificationCoins(repository)
+        return GetNotificationCoinsUseCaseImpl(repository)
     }
 
     @Provides

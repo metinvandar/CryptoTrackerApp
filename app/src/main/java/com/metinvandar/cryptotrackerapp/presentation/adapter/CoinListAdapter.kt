@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.metinvandar.cryptotrackerapp.R
-import com.metinvandar.cryptotrackerapp.common.extensions.visible
+import com.metinvandar.cryptotrackerapp.common.util.visible
 import com.metinvandar.cryptotrackerapp.databinding.CoinListItemBinding
 import com.metinvandar.cryptotrackerapp.domain.model.CoinDomainModel
 import kotlin.math.abs
@@ -52,7 +52,7 @@ class CoinListAdapter :
             itemViewBinding.run {
                 itemViewBinding.coinPrice.text =
                     context.getString(
-                        R.string.value_with_currency,
+                        R.string.price_with_currency,
                         coinItem.currentPrice.toString()
                     )
                 if (coinItem.priceChangePercentage > 0) {

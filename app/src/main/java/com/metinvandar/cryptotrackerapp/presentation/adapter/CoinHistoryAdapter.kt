@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.metinvandar.cryptotrackerapp.R
+import com.metinvandar.cryptotrackerapp.common.util.getFormattedDate
 import com.metinvandar.cryptotrackerapp.databinding.CoinHistoryItemBinding
 import com.metinvandar.cryptotrackerapp.domain.model.CoinHistory
 
@@ -18,7 +20,7 @@ class CoinHistoryAdapter :
     }
 
     override fun onBindViewHolder(holder: CoinHistoryViewHolder, position: Int) {
-        holder.bind()
+        holder.bind(currentList[position])
     }
 
     private class HistoryItemDiffCallback : DiffUtil.ItemCallback<CoinHistory>() {
@@ -37,8 +39,14 @@ class CoinHistoryAdapter :
 
     inner class CoinHistoryViewHolder(private val itemViewBinding: CoinHistoryItemBinding) :
         RecyclerView.ViewHolder(itemViewBinding.root) {
-            fun bind() {
-
+            fun bind(historyItem: CoinHistory) {
+                itemViewBinding.run {
+                    coinPrice.text =  itemView.context.getString(
+                        R.string.price_with_currency,
+                        historyItem.price.toString()
+                    )
+                    recordTime.text = historyItem.recordTime.getFormattedDate()
+                }
             }
         }
 }

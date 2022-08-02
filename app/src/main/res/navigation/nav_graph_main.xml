@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_coin_list">
 
         <action
-            android:id="@+id/action_coinList_to_rate_alert"
-            app:destination="@id/nav_fragment_rate_alert"
+            android:id="@+id/nav_action_coin_list_to_set_alert"
+            app:destination="@id/nav_fragment_set_alert"
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_from_left"
             app:popEnterAnim="@anim/enter_from_left"
@@ -26,10 +26,28 @@
         </action>
     </fragment>
     <fragment
-        android:id="@+id/nav_fragment_rate_alert"
+        android:id="@+id/nav_fragment_set_alert"
         android:name="com.metinvandar.cryptotrackerapp.presentation.set_alert.SetAlertFragment"
-        android:label="@string/rate_alert_fragment_label"
-        tools:layout="@layout/fragment_rate_alert">
+        android:label="@string/set_alert_fragment_label"
+        tools:layout="@layout/fragment_set_alert">
+
+        <action
+            android:id="@+id/nav_action_set_alert_to_history"
+            app:destination="@id/nav_fragment_history"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_from_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_from_right" >
+            <argument
+                android:name="coinId"
+                app:argType="string" />
+        </action>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_fragment_history"
+        android:name="com.metinvandar.cryptotrackerapp.presentation.coin_history.CoinHistoryFragment"
+        android:label="@string/coin_history_fragment_label"
+        tools:layout="@layout/fragment_coin_history" />
 </navigation>

@@ -22,9 +22,9 @@ class SetAlertViewModel @Inject constructor(
     private val _inputState = MutableStateFlow<InputState>(InputState.Initial)
     val inputState get() = _inputState.asStateFlow()
 
-    fun saveCoinAlert(coin: CoinDomainModel, minRate: Double, maxRate: Double) {
+    fun saveCoinAlert(coin: CoinDomainModel) {
         viewModelScope.launch {
-            saveCoinAlertUseCase(coin, minRate, maxRate)
+            saveCoinAlertUseCase(coin)
         }
     }
 

@@ -7,7 +7,6 @@ import com.metinvandar.cryptotrackerapp.domain.usecase.GetCoinsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,14 +17,9 @@ class CoinListViewModel @Inject constructor(
     private val _coinListState = MutableStateFlow<CoinListUIState>(CoinListUIState.Loading(true))
     val coinListState = _coinListState.asStateFlow()
 
-
-    init {
-        getInitialCoins()
-    }
-
-    fun getInitialCoins() {
+     fun getInitialCoins() {
         viewModelScope.launch {
-            getCoins().collectLatest { resource ->
+            getCoins().collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _coinListState.value = CoinListUIState.Loading(resource.status)

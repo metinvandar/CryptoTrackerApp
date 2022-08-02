@@ -5,7 +5,7 @@ import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
 import com.metinvandar.cryptotrackerapp.application.CoinPriceWorker
-import com.metinvandar.cryptotrackerapp.common.extensions.hideKeyboard
+import com.metinvandar.cryptotrackerapp.common.util.hideKeyboard
 import com.metinvandar.cryptotrackerapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
-            "COIN_RATE_ALERT",
+            "COIN_RATE_ALERT_WORK",
             ExistingPeriodicWorkPolicy.KEEP,
             notificationWorkRequest
         )

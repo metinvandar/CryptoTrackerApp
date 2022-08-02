@@ -6,7 +6,7 @@ import com.metinvandar.cryptotrackerapp.domain.usecase.GetCoinHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class CoinHistoryViewModel @Inject constructor(private val getCoinHistory: GetCo
 
     fun getHistory(coinId: String) {
         viewModelScope.launch {
-            getCoinHistory(coinId).collectLatest { coinHistory ->
+            getCoinHistory(coinId).collect { coinHistory ->
                 if (!coinHistory.isNullOrEmpty()) {
                     _uiState.value = HistoryUIState.Result(coinHistory)
                 } else {

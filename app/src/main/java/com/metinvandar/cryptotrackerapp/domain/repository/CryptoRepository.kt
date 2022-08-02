@@ -5,6 +5,7 @@ import com.metinvandar.cryptotrackerapp.data.local.entity.CoinAlertEntity
 import com.metinvandar.cryptotrackerapp.data.local.entity.CoinHistoryEntity
 import com.metinvandar.cryptotrackerapp.data.remote.models.PriceResponseWrapper
 import com.metinvandar.cryptotrackerapp.domain.model.CoinDomainModel
+import com.metinvandar.cryptotrackerapp.domain.model.CoinHistory
 import kotlinx.coroutines.flow.Flow
 
 interface CryptoRepository {
@@ -16,4 +17,6 @@ interface CryptoRepository {
     suspend fun getSimplePrice(coinIds: String): Flow<Resource<PriceResponseWrapper>>
 
     suspend fun saveCoinHistory(coinHistoryEntity: CoinHistoryEntity)
+
+    suspend fun getCoinHistory(coinId: String): Flow<List<CoinHistory>>
 }

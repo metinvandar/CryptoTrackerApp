@@ -1,4 +1,4 @@
-package com.metinvandar.cryptotrackerapp.common.extensions
+package com.metinvandar.cryptotrackerapp.common.util
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar

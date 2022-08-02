@@ -8,7 +8,7 @@ import javax.inject.Inject
 class SaveCoinAlertUseCaseImpl @Inject constructor(private val coinAlertDao: CoinAlertDao) :
     SaveCoinAlertUseCase {
 
-    override suspend fun invoke(coin: CoinDomainModel, minValue: Double, maxValue: Double) {
-        coinAlertDao.insertCoin(coin.toEntity(minValue, maxValue))
+    override suspend fun invoke(coin: CoinDomainModel) {
+        coinAlertDao.insertCoin(coin.toEntity(coin.minRate!!, coin.maxRate!!))
     }
 }

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.metinvandar.cryptotrackerapp.data.local.entity.CoinHistoryEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CoinHistoryDao {
